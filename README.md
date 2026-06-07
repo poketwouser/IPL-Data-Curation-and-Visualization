@@ -165,25 +165,6 @@ Hosting a data-heavy Python Dash application poses unique infrastructural challe
 * **The Problem:** Free-tier platforms like Render and Railway strictly cap RAM at ~500MB. Dash heavily relies on Pandas to process and filter data. Loading 260,000+ deliveries directly into memory instantly breached this threshold, triggering Out of Memory (OOM) crashes and silent deployment failures.
 * **The Solution:** We bypassed heavy CSV loading by strictly utilizing tightly compressed **Parquet** binaries. This shrank our memory footprint by 80%, allowing the app to successfully boot on ultra-low-memory containers. (Note: We also fixed Railway's strict `$PORT` environment mapping by dynamically exposing the port in our `Dockerfile`).
 
-### 2. The Vercel Serverless Pivot
-* **The Problem:** We wanted the unmatched edge-network speed of **Vercel**, but Vercel is designed for Node.js/Next.js, not stateful Python Dash applications.
-* **The Solution:** We architected a custom Serverless integration. We created a `vercel.json` routing configuration that funnels all frontend traffic into a dedicated Python Serverless Function (`api/index.py`) which acts as a lightweight WSGI wrapper for the Flask server. Because our Parquet files are so small, Vercel's serverless cold-starts are nearly instantaneous.
-
----
-
-## 🚀 How to Deploy (Vercel)
-
-1. Push your code to GitHub.
-2. Go to [Vercel](https://vercel.com) and click **Add New Project**.
-3. Import your GitHub repository.
-4. Leave all settings as default (Vercel will auto-detect `vercel.json`).
-5. Click **Deploy**. The app will be live on a `.vercel.app` domain in seconds. 🚀
-
-### Alternative: Hugging Face Spaces (Docker)
-1. Create a new Space on [Hugging Face](https://huggingface.co/spaces).
-2. Choose **Docker** as the SDK (Blank).
-3. Push your repository to the Hugging Face remote. It will automatically build from the provided `Dockerfile`.
-
 ## 📊 Data Pipeline
 
 The platform uses pre-processed Parquet files for fast startup:
