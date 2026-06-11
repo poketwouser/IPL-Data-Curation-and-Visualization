@@ -187,13 +187,13 @@ The design draws from:
 - **SofaScore** — Performance meters, form curves
 - **Netflix** — Scroll-triggered content reveals
 
----
+----
 
 ## 📜 License
 
 MIT License. Data sourced from [Cricsheet](https://cricsheet.org/) under their terms.
 
----
+----
 
 <p align="center">
   <sub>Built with ❤️ and way too much cricket data.</sub>
