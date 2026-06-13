@@ -18,7 +18,7 @@
 <p align="center">
   <strong>Cinema-grade cricket analytics. Apple Sports × F1 aesthetics.</strong>
   <br/>
-  <em>19 seasons (2008–2026 Live) · 1,200+ matches · 260K+ deliveries — decoded.</em>
+  <em>19 seasons (2008–2026 Live) · 1,235 matches · 293K+ deliveries — decoded.</em>
 </p>
 
 ---
@@ -33,17 +33,17 @@ This is not a dashboard. It's a **sports cinematography engine** — with GSAP-p
 
 ## 🧠 Problem Statement & Engineering Challenges
 
-The vast Cricsheet IPL ball-by-ball dataset (~260,000+ deliveries) contains immense analytical potential, but standard visualization dashboards fail to capture the adrenaline, cinematic atmosphere, and storytelling inherent to T20 cricket. **The goal** was to build a highly performant, production-grade intelligence platform that marries deep statistical rigor with the premium aesthetics of modern sports broadcasting (e.g., Apple Sports, F1).
+The vast Cricsheet IPL ball-by-ball dataset (**293,764 deliveries** across **1,235 matches** and **805 players**) contains immense analytical potential, but standard visualization dashboards fail to capture the adrenaline, cinematic atmosphere, and storytelling inherent to T20 cricket. **The goal** was to build a highly performant, production-grade intelligence platform that marries deep statistical rigor with the premium aesthetics of modern sports broadcasting (e.g., Apple Sports, F1).
 
 ### Key Challenges & Solutions
 
 1. **Handling Massive Data at Scale Without Crashing**
-   * **Problem**: Processing 260K+ rows of delivery data across multiple interactive UI modules dynamically creates massive Memory (OOM) spikes and severe latency during route transitions.
+   * **Problem**: Processing 290K+ rows of delivery data across multiple interactive UI modules dynamically creates massive Memory (OOM) spikes and severe latency during route transitions.
    * **Solution**: Migrated from raw CSVs to **highly compressed Parquet files**. Data is pre-aggregated and globally cached in memory via `Flask-Caching` on application startup. This allows instantaneous querying and route-switching without triggering repeated I/O reads.
 
 2. **Automated Asset Retrieval & Semantic Ambiguity**
-   * **Problem**: Automatically sourcing 700+ high-quality player portraits is notoriously difficult due to name abbreviations (e.g., "YS Chahal" vs "Yuzvendra Chahal") and the anti-bot protections of sports CDNs. Early iterations fetched incorrect celebrity or stock photos.
-   * **Solution**: Engineered a robust, multi-stage retrieval pipeline. Player initials are semantically expanded via Wikipedia/Bing to their full names, cross-referenced with a hardcoded ESPNcricinfo ID map for legends, and validated locally before being persistently cached in `assets/images/players`.
+   * **Problem**: Automatically sourcing player portraits across an 800+ player pool is notoriously difficult due to name abbreviations (e.g., "YS Chahal" vs "Yuzvendra Chahal") and the anti-bot protections of sports CDNs. Early iterations fetched incorrect celebrity or stock photos.
+   * **Solution**: Engineered a robust, multi-stage retrieval pipeline. Player initials are semantically expanded to full names, queried against the **Wikimedia API** with a **scored Bing image-scraping fallback**, then verified with **OpenCV Haar-cascade face validation** (rejecting team photos and mismatched faces) before being persistently cached in `assets/images/players`.
 
 3. **Achieving 60FPS Animations in a Python Framework**
    * **Problem**: Dash inherently uses React under the hood, but injecting heavy, scroll-triggered DOM animations entirely from a Python backend often results in severe stuttering and jittery component transitions.
@@ -162,17 +162,17 @@ Open **http://localhost:8050** in your browser.
 Hosting a data-heavy Python Dash application poses unique infrastructural challenges. Here is a breakdown of the deployment hurdles we faced and how they were solved:
 
 ### 1. The Memory Constraint (Render & Railway)
-* **The Problem:** Free-tier platforms like Render and Railway strictly cap RAM at ~500MB. Dash heavily relies on Pandas to process and filter data. Loading 260,000+ deliveries directly into memory instantly breached this threshold, triggering Out of Memory (OOM) crashes and silent deployment failures.
-* **The Solution:** We bypassed heavy CSV loading by strictly utilizing tightly compressed **Parquet** binaries. This shrank our memory footprint by 80%, allowing the app to successfully boot on ultra-low-memory containers. (Note: We also fixed Railway's strict `$PORT` environment mapping by dynamically exposing the port in our `Dockerfile`).
+* **The Problem:** Free-tier platforms like Render and Railway strictly cap RAM at ~500MB. Dash heavily relies on Pandas to process and filter data. Loading 290,000+ deliveries directly into memory instantly breached this threshold, triggering Out of Memory (OOM) crashes and silent deployment failures.
+* **The Solution:** We bypassed heavy CSV loading by strictly utilizing tightly compressed **Parquet** binaries. This shrank the on-disk delivery dataset from **25.4 MB (CSV) to 1.27 MB (Parquet) — a ~95% reduction** — allowing the app to successfully boot on ultra-low-memory containers. (Note: We also fixed Railway's strict `$PORT` environment mapping by dynamically exposing the port in our `Dockerfile`).
 
 ## 📊 Data Pipeline
 
-The platform uses pre-processed Parquet files for fast startup:
+The platform uses a reproducible scraper-to-Parquet pipeline for fast startup:
 
-1. **Raw Data** — CSV from Cricsheet (`data/raw/`)
-2. **Processing** — Jupyter notebooks (`notebooks/P01-P05`)
-3. **Output** — Optimized Parquet files (`data/processed/`)
-4. **Loading** — `utils/data_loader.py` reads Parquet at startup
+1. **Ingest** — `utils/data_scraper.py` downloads and caches Cricsheet's `ipl_json.zip` (1,235 nested JSON match files)
+2. **Parse & Normalize** — innings → overs → deliveries are flattened into `matches`, `deliveries`, and `impact_players` tables, with team renames resolved (e.g. *Kings XI Punjab → Punjab Kings*) and **Impact-Player substitution events** extracted from each delivery's `replacements` field
+3. **Output** — Optimized Parquet files written to `data/processed/`
+4. **Loading** — `utils/data_loader.py` reads Parquet once at startup, cached in-memory via `functools.lru_cache` + `Flask-Caching`
 
 ---
 
