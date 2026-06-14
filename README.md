@@ -5,15 +5,10 @@
   <img src="https://img.shields.io/badge/Plotly-5.18+-3F4F75?style=flat-square&logo=plotly" />
   <img src="https://img.shields.io/badge/Python-3.11-3776AB?style=flat-square&logo=python" />
   <img src="https://img.shields.io/badge/GSAP-3.12-88CE02?style=flat-square" />
-  <img src="https://img.shields.io/badge/Deploy-Vercel-000000?style=flat-square&logo=vercel" />
-  <a href="https://ipl-intel.vercel.app/" target="_blank"><img src="https://img.shields.io/badge/Live_Demo-🔴_Online-FF0000?style=flat-square" /></a>
+  <img src="https://img.shields.io/badge/Deploy-Docker-2496ED?style=flat-square&logo=docker&logoColor=white" />
 </p>
 
 <h1 align="center">🏏 IPL Intelligence Platform</h1>
-
-<p align="center">
-  <strong><a href="https://ipl-intel.vercel.app/">🌐 VIEW LIVE DEMO: ipl-intel.vercel.app</a></strong>
-</p>
 
 <p align="center">
   <strong>Cinema-grade cricket analytics. Apple Sports × F1 aesthetics.</strong>
@@ -100,9 +95,9 @@ The vast Cricsheet IPL ball-by-ball dataset (**293,764 deliveries** across **1,2
 | **Animations** | GSAP 3.12 + ScrollTrigger |
 | **Scrolling** | Lenis smooth scroll |
 | **Styling** | Custom CSS (2,500+ lines, design system v5) |
-| **Server** | Flask + Vercel Serverless |
+| **Server** | Flask + Gunicorn (WSGI) |
 | **Caching** | Flask-Caching (SimpleCache) |
-| **Deployment** | Vercel (vercel.json + api/index.py included) |
+| **Deployment** | Docker (Railway / Fly.io / any Python host) |
 | **Data Source** | [Cricsheet](https://cricsheet.org/) (2008–2026) |
 
 ---
@@ -148,10 +143,8 @@ Open **http://localhost:8050** in your browser.
 │   ├── animations.js       # GSAP animation engine v5
 │   └── particles.js        # Canvas particle system
 ├── data/processed/         # Parquet datasets (matches, deliveries, venues)
-├── api/
-│   └── index.py            # Vercel Serverless Function entrypoint
-├── Dockerfile              # Containerization for Railway / Fly.io
-├── vercel.json             # Vercel routing configuration
+├── Dockerfile              # Containerization for Railway / Fly.io / any host
+├── Procfile                # Process definition for WSGI hosts
 └── requirements.txt        # Python dependencies
 ```
 
