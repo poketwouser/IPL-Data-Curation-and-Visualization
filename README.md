@@ -5,14 +5,16 @@
   <img src="https://img.shields.io/badge/Plotly-5.18+-3F4F75?style=flat-square&logo=plotly" />
   <img src="https://img.shields.io/badge/Python-3.11-3776AB?style=flat-square&logo=python" />
   <img src="https://img.shields.io/badge/GSAP-3.12-88CE02?style=flat-square" />
-  <img src="https://img.shields.io/badge/Deploy-Vercel-000000?style=flat-square&logo=vercel" />
-  <a href="https://ipl-intel.vercel.app/" target="_blank"><img src="https://img.shields.io/badge/Live_Demo-🔴_Online-FF0000?style=flat-square" /></a>
+  <img src="https://img.shields.io/badge/Deploy-GitHub_Pages-222222?style=flat-square&logo=github" />
+  <a href="https://poketwouser.github.io/IPL-Intelligence/" target="_blank"><img src="https://img.shields.io/badge/Project_Site-GitHub_Pages-2088FF?style=flat-square&logo=github" /></a>
 </p>
 
 <h1 align="center">🏏 IPL Intelligence Platform</h1>
 
 <p align="center">
-  <strong><a href="https://ipl-intel.vercel.app/">🌐 VIEW LIVE DEMO: ipl-intel.vercel.app</a></strong>
+  <strong><a href="https://poketwouser.github.io/IPL-Intelligence/">🌐 PROJECT SITE: poketwouser.github.io/IPL-Intelligence</a></strong>
+  <br/>
+  <sub>The interactive Dash app runs locally (see Quick Start). GitHub Pages hosts this static project page only.</sub>
 </p>
 
 <p align="center">
@@ -100,9 +102,9 @@ The vast Cricsheet IPL ball-by-ball dataset (**293,764 deliveries** across **1,2
 | **Animations** | GSAP 3.12 + ScrollTrigger |
 | **Scrolling** | Lenis smooth scroll |
 | **Styling** | Custom CSS (2,500+ lines, design system v5) |
-| **Server** | Flask + Vercel Serverless |
+| **Server** | Flask (Dash WSGI) |
 | **Caching** | Flask-Caching (SimpleCache) |
-| **Deployment** | Vercel (vercel.json + api/index.py included) |
+| **Deployment** | Docker / Procfile (any Python host) · GitHub Pages for the static project site |
 | **Data Source** | [Cricsheet](https://cricsheet.org/) (2008–2026) |
 
 ---
@@ -148,10 +150,10 @@ Open **http://localhost:8050** in your browser.
 │   ├── animations.js       # GSAP animation engine v5
 │   └── particles.js        # Canvas particle system
 ├── data/processed/         # Parquet datasets (matches, deliveries, venues)
-├── api/
-│   └── index.py            # Vercel Serverless Function entrypoint
 ├── Dockerfile              # Containerization for Railway / Fly.io
-├── vercel.json             # Vercel routing configuration
+├── Procfile                # gunicorn process definition (Render/Heroku-style hosts)
+├── _config.yml             # Jekyll config for the GitHub Pages project site
+├── .github/workflows/      # jekyll-gh-pages.yml — builds & deploys the Pages site
 └── requirements.txt        # Python dependencies
 ```
 
