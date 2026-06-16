@@ -35,7 +35,7 @@ This is not a dashboard. It's a **sports cinematography engine** — with GSAP-p
 
 ## 🧠 Problem Statement & Engineering Challenges
 
-The vast Cricsheet IPL ball-by-ball dataset (**293,764 deliveries** across **1,235 matches** and **805 players**) contains immense analytical potential, but standard visualization dashboards fail to capture the adrenaline, cinematic atmosphere, and storytelling inherent to T20 cricket. **The goal** was to build a highly performant, production-grade intelligence platform that marries deep statistical rigor with the premium aesthetics of modern sports broadcasting (e.g., Apple Sports, F1).
+This vast Cricsheet IPL ball-by-ball dataset (**293,764 deliveries** across **1,235 matches** and **805 players**) contains incredible analytical potential, but standard visualization dashboards fail to capture the adrenaline-inducing, cinematic atmosphere, and storytelling inherent to T20 cricket. **The goal** was to build a highly performant, production-grade intelligence platform that marries deep statistical rigor with the premium aesthetics of modern sports broadcasting (e.g., Apple Sports, F1).
 
 ### Key Challenges & Solutions
 
